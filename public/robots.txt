@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap — TODO: replace with your actual production domain
+Sitemap: https://nadavai.co.il/sitemap.xml
