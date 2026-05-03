@@ -3,6 +3,7 @@
 import { CountUp } from '@/components/ui/CountUp'
 import ProximityGlowText from '@/components/ui/ProximityGlowText'
 import { MdKeyboardArrowDown } from 'react-icons/md'
+import config from '@/data/siteConfig.json'
 
 function scrollToSection(id: string) {
   const el = document.getElementById(id)
@@ -61,8 +62,28 @@ export default function HeroSection() {
           {' '}פתרונות AI מוכנים לייצור, משולבים בצורה מאובטחת ומדרגית בתהליכי העסק שלך.
         </p>
 
+        {/* Stats Strip */}
+        <div className="grid grid-cols-3 gap-6 max-w-md mx-auto pt-8 border-t border-blue-900/60 mb-10">
+          <div className="text-center">
+            <div className="text-2xl sm:text-3xl font-bold text-white">
+              <CountUp target={config.projectsCompleted} suffix="+" />
+            </div>
+            <div className="text-xs sm:text-sm text-gray-500 mt-1">פרויקטים</div>
+          </div>
+          <div className="text-center border-x border-blue-900/60">
+            <div className="text-2xl sm:text-3xl font-bold text-white">
+              <CountUp target={config.timeSavedPercent} suffix="%" />
+            </div>
+            <div className="text-xs sm:text-sm text-gray-500 mt-1">חיסכון בזמן</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl sm:text-3xl font-bold text-white">24/7</div>
+            <div className="text-xs sm:text-sm text-gray-500 mt-1">אוטומציה</div>
+          </div>
+        </div>
+
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             onClick={() => scrollToSection('contact')}
             className="w-full sm:w-auto bg-cyan-500 hover:bg-cyan-400 text-white font-bold px-8 py-4 rounded-xl text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-cyan-500/30"
@@ -75,26 +96,6 @@ export default function HeroSection() {
           >
             גלה את השירותים <MdKeyboardArrowDown size={22} />
           </button>
-        </div>
-
-        {/* Stats Strip */}
-        <div className="grid grid-cols-3 gap-6 max-w-md mx-auto pt-8 border-t border-blue-900/60">
-          <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-white">
-              <CountUp target={50} suffix="+" />
-            </div>
-            <div className="text-xs sm:text-sm text-gray-500 mt-1">פרויקטים</div>
-          </div>
-          <div className="text-center border-x border-blue-900/60">
-            <div className="text-2xl sm:text-3xl font-bold text-white">
-              <CountUp target={30} suffix="%" />
-            </div>
-            <div className="text-xs sm:text-sm text-gray-500 mt-1">חיסכון בזמן</div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl sm:text-3xl font-bold text-white">24/7</div>
-            <div className="text-xs sm:text-sm text-gray-500 mt-1">אוטומציה</div>
-          </div>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { CountUp } from '@/components/ui/CountUp'
 import { ShieldIcon, CodeIcon, UsersIcon } from '@/components/ui/Icons'
+import config from '@/data/siteConfig.json'
 
 const DIFFERENTIATORS = [
   {
@@ -23,10 +24,10 @@ const DIFFERENTIATORS = [
 ]
 
 const STATS = [
-  { target: 10,  suffix: '+',  label: 'שנות ניסיון בפיתוח',      color: 'text-cyan-400' },
-  { target: 50,  suffix: '+',  label: 'פרויקטים הושלמו',         color: 'text-blue-400' },
-  { target: 30,  suffix: '%+', label: 'חיסכון ממוצע בזמן עבודה', color: 'text-violet-400' },
-  { target: 100, suffix: '%',  label: 'לקוחות ממליצים',           color: 'text-green-400' },
+  { target: config.yearsExperience,        suffix: '+',  label: 'שנות ניסיון בפיתוח',      color: 'text-cyan-400' },
+  { target: config.projectsCompleted,      suffix: '+',  label: 'פרויקטים הושלמו',         color: 'text-blue-400' },
+  { target: config.timeSavedPercent,       suffix: '%+', label: 'חיסכון ממוצע בזמן עבודה', color: 'text-violet-400' },
+  { target: config.clientRecommendPercent, suffix: '%',  label: 'לקוחות ממליצים',           color: 'text-green-400' },
 ]
 
 export default function AboutSection() {
@@ -44,7 +45,7 @@ export default function AboutSection() {
             </h2>
             <p className="text-blue-200/70 text-lg leading-relaxed mb-10">
               רוב יועצי ה-AI הרגילים ייתנו לך פרזנטציה ורשימת כלים. אנחנו ניגשים לשולחן עם ניסיון של{' '}
-              <strong className="text-white">מפתח Full Stack Senior</strong> ומממשים את הפתרון מ-A עד ז &ndash;
+              <strong className="text-white">מפתח Full Stack Senior</strong> ומממשים את הפתרון מ-A עד Z &ndash;
               מאפיון, פיתוח, ועד הטמעה והדרכת הצוות.
             </p>
 
