@@ -86,7 +86,7 @@ export default function ContactSection() {
                   type="text"
                   name="company"
                   autoComplete="organization"
-                  placeholder="חברת הטכנולוגיה שלי"
+                  placeholder="שם החברה"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-400 bg-slate-50/50 text-gray-900 placeholder:text-gray-400 transition-all"
                 />
               </div>

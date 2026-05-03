@@ -22,11 +22,12 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",  // 'unsafe-inline' needed by Next.js hydration
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https://formspree.io",
-              "img-src 'self' data: blob:",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.voiceflow.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.voiceflow.com",
+              "font-src 'self' https://fonts.gstatic.com https://cdn.voiceflow.com",
+              "connect-src 'self' https://formspree.io https://general-runtime.voiceflow.com wss://general-runtime.voiceflow.com https://runtime-api.voiceflow.com wss://runtime-api.voiceflow.com https://api.voiceflow.com",
+              "img-src 'self' data: blob: https://cdn.voiceflow.com https://*.s3.amazonaws.com",
+              "frame-src 'none'",
               "frame-ancestors 'none'",
             ].join('; '),
           },

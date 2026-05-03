@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Assistant } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 // Load Assistant — a modern, clean Hebrew-optimized Google Font
@@ -73,6 +74,28 @@ export default function RootLayout({
     // lang="he" for Hebrew, dir="rtl" for Right-to-Left layout
     <html lang="he" dir="rtl" className={assistant.variable}>
       <body className="font-assistant bg-white text-gray-900">{children}</body>
+      <Script
+        id="voiceflow-widget"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(d, t) {
+              var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+              v.onload = function() {
+                window.voiceflow.chat.load({
+                  verify: { projectID: '69f7cefbd8bf4ff14739ce53' },
+                  url: 'https://general-runtime.voiceflow.com',
+                  versionID: 'production',
+                  voice: { url: 'https://runtime-api.voiceflow.com' }
+                });
+              }
+              v.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';
+              v.type = 'text/javascript';
+              s.parentNode.insertBefore(v, s);
+            })(document, 'script');
+          `,
+        }}
+      />
     </html>
   )
 }
