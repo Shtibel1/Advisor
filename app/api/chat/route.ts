@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+export const dynamic = 'force-dynamic'
 
 const SYSTEM_PROMPT = `את מאיה – עוזרת אישית חכמה וחמה של נדב שטיבל, יועץ ומומחה בינה מלאכותית לעסקים בישראל.
 
@@ -27,6 +27,8 @@ export async function POST(req: NextRequest) {
   if (!process.env.OPENAI_API_KEY) {
     return NextResponse.json({ error: 'OPENAI_API_KEY not configured' }, { status: 503 })
   }
+
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
   let body: { messages: { role: string; content: string }[] }
   try {
