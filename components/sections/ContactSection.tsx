@@ -92,20 +92,36 @@ export default function ContactSection() {
               </div>
             </div>
 
-            <div className="mb-6">
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                כתובת אימייל <span className="text-cyan-600">*</span>
-              </label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                required
-                autoComplete="email"
-                placeholder="israel@example.com"
-                dir="ltr"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-400 bg-slate-50/50 text-gray-900 placeholder:text-gray-400 transition-all"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                  כתובת אימייל <span className="text-cyan-600">*</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  required
+                  autoComplete="email"
+                  placeholder="israel@example.com"
+                  dir="ltr"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-400 bg-slate-50/50 text-gray-900 placeholder:text-gray-400 transition-all"
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                  טלפון
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  name="phone"
+                  autoComplete="tel"
+                  placeholder="050-0000000"
+                  dir="ltr"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 focus:border-cyan-400 bg-slate-50/50 text-gray-900 placeholder:text-gray-400 transition-all"
+                />
+              </div>
             </div>
 
             <div className="mb-8">

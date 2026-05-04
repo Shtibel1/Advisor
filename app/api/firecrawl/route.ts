@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 
       const result = await app.scrape(url, { formats: ['markdown'] })
 
-      if (!result.success) {
+      if (!result || !result.markdown) {
         return NextResponse.json({ error: 'Scrape failed' }, { status: 502 })
       }
 
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       const safeLimit = Math.min(Math.max(1, Number(limit)), 10)
       const result = await app.search(query, { limit: safeLimit })
 
-      if (!result.success) {
+      if (!result || !result.data) {
         return NextResponse.json({ error: 'Search failed' }, { status: 502 })
       }
 

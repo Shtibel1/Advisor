@@ -67,6 +67,7 @@ const SERVICES = [
       'תיאום פגישות וסנכרון ישיר ליומן (Google Calendar / Calendly)',
       'חיבור למערכת ה-CRM לעדכון סטטוס לידים בזמן אמת',
     ],
+    demoHref: '/demos/whatsapp',
   },
   {
     Icon: PhoneAgentIcon,

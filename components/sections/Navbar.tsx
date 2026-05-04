@@ -96,7 +96,17 @@ export default function Navbar() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
               </span>
-              דמו חי
+              דמו RAG
+            </Link>
+            <Link
+              href="/demos/whatsapp"
+              className="flex items-center gap-1.5 rounded-lg border border-[#25D366]/40 px-4 py-2 text-sm font-medium text-[#25D366] transition-all hover:border-[#25D366] hover:bg-[#25D366]/10"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#25D366] opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#25D366]" />
+              </span>
+              דמו WhatsApp
             </Link>
             <button
               onClick={() => handleLink('contact')}
@@ -134,6 +144,16 @@ export default function Navbar() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
             </span>
             דמו חי — סוכן ידע ארגוני
+          </Link>
+          <Link
+            href="/demos/whatsapp"
+            className="flex items-center justify-center gap-2 rounded-lg border border-[#25D366]/40 py-3 text-center text-sm font-medium text-[#25D366] transition-all hover:bg-[#25D366]/10"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#25D366] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#25D366]" />
+            </span>
+            דמו חי — WhatsApp
           </Link>
           <button onClick={() => handleLink('contact')} className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold px-5 py-3 rounded-lg text-center transition-colors mt-2">
             קביעת שיחת ייעוץ
