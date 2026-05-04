@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Prevent webpack from trying to bundle server-only packages that use Node built-ins
+  serverExternalPackages: ['@mendable/firecrawl-js', 'undici'],
+
   // Compress responses
   compress: true,
 
