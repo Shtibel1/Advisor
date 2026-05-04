@@ -97,7 +97,7 @@ export default function HeroSection() {
         <p className="text-lg sm:text-xl md:text-2xl text-blue-200/75 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
           אני לא רק מייעץ &ndash;{' '}
           <strong className="text-white font-semibold">אני מממש</strong>.
-          {' '}פתרונות AI מוכנים לייצור, משולבים בצורה מאובטחת ומדרגית בתהליכי העסק שלך.
+          {' '}פתרונות AI מוכנים לייצור, משולבים בצורה מאובטחת בתהליכי העסק שלך.
         </p>
 
         {/* Stats Strip */}

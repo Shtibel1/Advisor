@@ -52,9 +52,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, VOICEFLOW_API_KEY } =
     process.env
 
-  if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE_NUMBER || !VOICEFLOW_API_KEY) {
-    console.error('[whatsapp/route] Missing required environment variables')
-    return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 })
+  const missingVars = [
+    ['TWILIO_ACCOUNT_SID', TWILIO_ACCOUNT_SID],
+    ['TWILIO_AUTH_TOKEN', TWILIO_AUTH_TOKEN],
+    ['TWILIO_PHONE_NUMBER', TWILIO_PHONE_NUMBER],
+    ['VOICEFLOW_API_KEY', VOICEFLOW_API_KEY],
+  ]
+    .filter(([, value]) => !value)
+    .map(([name]) => name)
+
+  if (missingVars.length > 0) {
+    console.error('[whatsapp/route] Missing env vars:', missingVars.join(', '))
+    return NextResponse.json(
+      { error: 'Server misconfiguration', missing: missingVars },
+      { status: 500 }
+    )
   }
 
   try {
