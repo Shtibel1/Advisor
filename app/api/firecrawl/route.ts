@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Only http/https URLs are allowed' }, { status: 400 })
       }
 
-      const result = await app.scrapeUrl(url, { formats: ['markdown'] })
+      const result = await app.scrape(url, { formats: ['markdown'] })
 
       if (!result.success) {
         return NextResponse.json({ error: 'Scrape failed' }, { status: 502 })
