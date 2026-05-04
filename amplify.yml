@@ -8,7 +8,7 @@ frontend:
       commands:
         - echo "TWILIO_ACCOUNT_SID=$TWILIO_ACCOUNT_SID" >> .env.production
         - echo "TWILIO_AUTH_TOKEN=$TWILIO_AUTH_TOKEN" >> .env.production
-        - echo "TWLIO_PHONE_NUMBER=$TWILIO_PHONE_NUMBER" >> .env.production
+        - echo "TWILIO_PHONE_NUMBER=$TWILIO_PHONE_NUMBER" >> .env.production
         - echo "VOICEFLOW_API_KEY=$VOICEFLOW_API_KEY" >> .env.production
         - echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> .env.production
         - echo "FIRECRAWL_API_KEY=$FIRECRAWL_API_KEY" >> .env.production
