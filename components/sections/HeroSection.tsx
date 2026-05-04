@@ -4,6 +4,26 @@ import { CountUp } from '@/components/ui/CountUp'
 import ProximityGlowText from '@/components/ui/ProximityGlowText'
 import { MdKeyboardArrowDown } from 'react-icons/md'
 import config from '@/data/siteConfig.json'
+import {
+  SiOpenai,
+  SiGooglegemini,
+  SiAnthropic,
+  SiNextdotjs,
+  SiNodedotjs,
+  SiMake,
+  SiN8N,
+} from 'react-icons/si'
+import { IconType } from 'react-icons'
+
+const TECH_LOGOS: { Icon: IconType; label: string; hoverClass: string }[] = [
+  { Icon: SiOpenai,       label: 'OpenAI',   hoverClass: 'hover:text-emerald-400' },
+  { Icon: SiGooglegemini, label: 'Gemini',   hoverClass: 'hover:text-blue-400'    },
+  { Icon: SiAnthropic,    label: 'Claude',   hoverClass: 'hover:text-orange-300'  },
+  { Icon: SiNextdotjs,    label: 'Next.js',  hoverClass: 'hover:text-white'       },
+  { Icon: SiNodedotjs,    label: 'Node.js',  hoverClass: 'hover:text-green-400'   },
+  { Icon: SiMake,         label: 'Make',     hoverClass: 'hover:text-violet-400'  },
+  { Icon: SiN8N,          label: 'n8n',      hoverClass: 'hover:text-red-400'     },
+]
 
 function scrollToSection(id: string) {
   const el = document.getElementById(id)
@@ -42,6 +62,24 @@ export default function HeroSection() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-24">
 
+        {/* Tech Logos Strip */}
+        <div className="mb-10">
+          <p className="text-xs font-semibold uppercase tracking-widest text-blue-400/40 mb-5">
+            Technologies &amp; Integrations
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-x-9 gap-y-5">
+            {TECH_LOGOS.map(({ Icon, label, hoverClass }) => (
+              <div
+                key={label}
+                className={`flex flex-col items-center gap-1.5 text-white/20 ${hoverClass} transition-colors duration-300 cursor-default`}
+              >
+                <Icon size={24} />
+                <span className="text-[10px] tracking-wide font-medium">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Status Badge */}
         <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 px-4 py-2 rounded-full text-sm font-medium mb-8">
           <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse flex-shrink-0" />
@@ -50,15 +88,15 @@ export default function HeroSection() {
 
         {/* Main Headline */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.2] mb-6 tracking-tight">
-          <ProximityGlowText text="הופכים בינה מלאכותית" />
+          <ProximityGlowText text="הופך בינה מלאכותית" />
           <br />
           <ProximityGlowText text="לרווח נקי בעסק שלך" isGradient />
         </h1>
 
         {/* Subheadline */}
         <p className="text-lg sm:text-xl md:text-2xl text-blue-200/75 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-          אנחנו לא רק מייעצים &ndash;{' '}
-          <strong className="text-white font-semibold">אנחנו מממשים</strong>.
+          אני לא רק מייעץ &ndash;{' '}
+          <strong className="text-white font-semibold">אני מממש</strong>.
           {' '}פתרונות AI מוכנים לייצור, משולבים בצורה מאובטחת ומדרגית בתהליכי העסק שלך.
         </p>
 

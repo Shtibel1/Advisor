@@ -1,7 +1,15 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { MenuIcon, XIcon } from '@/components/ui/Icons'
+
+const NAV_SECTIONS = [
+  { id: 'pain-points', label: 'האתגרים'  },
+  { id: 'services',   label: 'שירותים'  },
+  { id: 'about',      label: 'אודות'    },
+  { id: 'contact',    label: 'צור קשר'  },
+]
 
 function scrollToSection(id: string) {
   const el = document.getElementById(id)
@@ -24,29 +32,72 @@ function scrollToSection(id: string) {
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>('')
+
+  useEffect(() => {
+    const observers: IntersectionObserver[] = []
+
+    NAV_SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id)
+      if (!el) return
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveSection(id)
+        },
+        { rootMargin: '-30% 0px -60% 0px', threshold: 0 }
+      )
+      observer.observe(el)
+      observers.push(observer)
+    })
+
+    return () => observers.forEach(o => o.disconnect())
+  }, [])
 
   const handleLink = (id: string) => {
     setMenuOpen(false)
     scrollToSection(id)
   }
 
+  const linkClass = (id: string) =>
+    `font-medium transition-all duration-200 relative after:absolute after:bottom-[-4px] after:right-0 after:h-[2px] after:bg-cyan-400 after:transition-all after:duration-200 ${
+      activeSection === id
+        ? 'text-cyan-400 after:w-full'
+        : 'text-gray-300 hover:text-cyan-400 after:w-0 hover:after:w-full'
+    }`
+
+  const mobileLinkClass = (id: string) =>
+    `py-2 font-medium border-b border-blue-900/30 transition-colors text-right ${
+      activeSection === id ? 'text-cyan-400' : 'text-gray-300 hover:text-cyan-400'
+    }`
+
   return (
     <nav className="fixed top-0 inset-x-0 z-50 bg-[#0A1628]/95 backdrop-blur-sm border-b border-blue-900/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* In RTL flex-row, first child = rightmost (logo), last child = leftmost (nav links) */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo — appears on the RIGHT in RTL */}
+          {/* Logo */}
           <a href="#" className="flex items-center gap-1 group">
             <span className="text-2xl font-bold text-white group-hover:text-blue-100 transition-colors">Nadav</span>
             <span className="text-2xl font-bold text-cyan-400">AI</span>
           </a>
 
-          {/* Desktop Nav — appears on the LEFT in RTL */}
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
-            <button onClick={() => handleLink('services')} className="text-gray-300 hover:text-cyan-400 font-medium transition-colors">שירותים</button>
-            <button onClick={() => handleLink('about')}    className="text-gray-300 hover:text-cyan-400 font-medium transition-colors">אודות</button>
-            <button onClick={() => handleLink('contact')}  className="text-gray-300 hover:text-cyan-400 font-medium transition-colors">צור קשר</button>
+            {NAV_SECTIONS.map(({ id, label }) => (
+              <button key={id} onClick={() => handleLink(id)} className={linkClass(id)}>
+                {label}
+              </button>
+            ))}
+            <Link
+              href="/demos/rag"
+              className="flex items-center gap-1.5 rounded-lg border border-cyan-500/40 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
+              </span>
+              דמו חי
+            </Link>
             <button
               onClick={() => handleLink('contact')}
               className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition-all hover:shadow-lg hover:shadow-cyan-500/25"
@@ -69,10 +120,22 @@ export default function Navbar() {
       {/* Mobile Dropdown Menu */}
       {menuOpen && (
         <div className="md:hidden bg-[#0D1E35] border-t border-blue-900/50 px-4 py-6 flex flex-col gap-4">
-          <button onClick={() => handleLink('services')} className="text-gray-300 hover:text-cyan-400 py-2 font-medium border-b border-blue-900/30 transition-colors text-right">שירותים</button>
-          <button onClick={() => handleLink('about')}    className="text-gray-300 hover:text-cyan-400 py-2 font-medium border-b border-blue-900/30 transition-colors text-right">אודות</button>
-          <button onClick={() => handleLink('contact')}  className="text-gray-300 hover:text-cyan-400 py-2 font-medium border-b border-blue-900/30 transition-colors text-right">צור קשר</button>
-          <button onClick={() => handleLink('contact')}  className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold px-5 py-3 rounded-lg text-center transition-colors mt-2">
+          {NAV_SECTIONS.map(({ id, label }) => (
+            <button key={id} onClick={() => handleLink(id)} className={mobileLinkClass(id)}>
+              {label}
+            </button>
+          ))}
+          <Link
+            href="/demos/rag"
+            className="flex items-center justify-center gap-2 rounded-lg border border-cyan-500/40 py-3 text-center text-sm font-medium text-cyan-400 transition-all hover:bg-cyan-400/10"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
+            </span>
+            דמו חי — סוכן ידע ארגוני
+          </Link>
+          <button onClick={() => handleLink('contact')} className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold px-5 py-3 rounded-lg text-center transition-colors mt-2">
             קביעת שיחת ייעוץ
           </button>
         </div>

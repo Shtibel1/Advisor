@@ -43,7 +43,7 @@ export default function ContactSection() {
             <span className="text-cyan-600">בואו נדבר</span>
           </h2>
           <p className="text-lg text-gray-500">
-            ספרו לנו על האתגר שלכם ונחזור אליכם תוך 24 שעות
+            ספרו לי על האתגר שלכם ואחזור אליכם תוך 24 שעות
           </p>
         </div>
 
@@ -53,7 +53,7 @@ export default function ContactSection() {
               <CheckIcon />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">ההודעה נשלחה בהצלחה!</h3>
-            <p className="text-gray-500 max-w-sm mx-auto">תודה! נחזור אליכם בהקדם האפשרי.</p>
+            <p className="text-gray-500 max-w-sm mx-auto">תודה! אחזור אליכם בהקדם האפשרי.</p>
           </div>
         ) : (
           <form

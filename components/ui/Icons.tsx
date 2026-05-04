@@ -11,8 +11,9 @@ import {
   MdCode,
   MdPeople,
   MdCheck,
+  MdPhoneInTalk,
 } from 'react-icons/md'
-import { FaLinkedin } from 'react-icons/fa'
+import { FaLinkedin, FaWhatsapp } from 'react-icons/fa'
 
 export const MenuIcon     = () => <MdMenu      size={24} />
 export const XIcon        = () => <MdClose     size={24} />
@@ -25,5 +26,7 @@ export const TrendingUpIcon = () => <MdTrendingUp size={24} />
 export const ShieldIcon   = () => <MdSecurity  size={20} />
 export const CodeIcon     = () => <MdCode      size={20} />
 export const UsersIcon    = () => <MdPeople    size={20} />
-export const CheckIcon    = () => <MdCheck     size={32} />
-export const LinkedInIcon = () => <FaLinkedin  size={18} />
+export const CheckIcon      = () => <MdCheck       size={32} />
+export const LinkedInIcon   = () => <FaLinkedin    size={18} />
+export const WhatsAppIcon   = () => <FaWhatsapp    size={24} />
+export const PhoneAgentIcon = () => <MdPhoneInTalk size={24} />
