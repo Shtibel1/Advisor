@@ -67,11 +67,11 @@ export async function POST(req: NextRequest) {
       const safeLimit = Math.min(Math.max(1, Number(limit)), 10)
       const result = await app.search(query, { limit: safeLimit })
 
-      if (!result || !result.data) {
+      if (!result || !result.web) {
         return NextResponse.json({ error: 'Search failed' }, { status: 502 })
       }
 
-      return NextResponse.json({ results: result.data })
+      return NextResponse.json({ results: result.web })
     }
   } catch (err) {
     console.error('[Firecrawl] error:', err)

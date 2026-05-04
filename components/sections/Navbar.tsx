@@ -1,14 +1,45 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { MenuIcon, XIcon } from '@/components/ui/Icons'
+import { ChevronDown } from 'lucide-react'
 
 const NAV_SECTIONS = [
   { id: 'pain-points', label: 'האתגרים'  },
   { id: 'services',   label: 'שירותים'  },
   { id: 'about',      label: 'אודות'    },
   { id: 'contact',    label: 'צור קשר'  },
+]
+
+const DEMOS = [
+  {
+    href: '/demos/rag',
+    label: 'סוכן ידע ארגוני',
+    badge: 'RAG',
+    color: 'text-cyan-400',
+    ping: 'bg-cyan-400',
+    border: 'border-cyan-500/30',
+    hover: 'hover:bg-cyan-400/10',
+  },
+  {
+    href: '/demos/whatsapp',
+    label: 'צ׳אט-בוט WhatsApp',
+    badge: 'WhatsApp',
+    color: 'text-[#25D366]',
+    ping: 'bg-[#25D366]',
+    border: 'border-[#25D366]/30',
+    hover: 'hover:bg-[#25D366]/10',
+  },
+  {
+    href: '/demos/finance',
+    label: 'דוחות פיננסיים',
+    badge: 'Finance',
+    color: 'text-violet-400',
+    ping: 'bg-violet-400',
+    border: 'border-violet-500/30',
+    hover: 'hover:bg-violet-400/10',
+  },
 ]
 
 function scrollToSection(id: string) {
@@ -31,8 +62,21 @@ function scrollToSection(id: string) {
 }
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen]     = useState(false)
+  const [demoOpen, setDemoOpen]     = useState(false)
   const [activeSection, setActiveSection] = useState<string>('')
+  const demoRef = useRef<HTMLDivElement>(null)
+
+  // Close demo dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (demoRef.current && !demoRef.current.contains(e.target as Node)) {
+        setDemoOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   useEffect(() => {
     const observers: IntersectionObserver[] = []
@@ -88,26 +132,42 @@ export default function Navbar() {
                 {label}
               </button>
             ))}
-            <Link
-              href="/demos/rag"
-              className="flex items-center gap-1.5 rounded-lg border border-cyan-500/40 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
-              </span>
-              דמו RAG
-            </Link>
-            <Link
-              href="/demos/whatsapp"
-              className="flex items-center gap-1.5 rounded-lg border border-[#25D366]/40 px-4 py-2 text-sm font-medium text-[#25D366] transition-all hover:border-[#25D366] hover:bg-[#25D366]/10"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#25D366] opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#25D366]" />
-              </span>
-              דמו WhatsApp
-            </Link>
+
+            {/* Demos dropdown */}
+            <div className="relative" ref={demoRef}>
+              <button
+                onClick={() => setDemoOpen(!demoOpen)}
+                className="flex items-center gap-1.5 rounded-lg border border-cyan-500/40 px-4 py-2 text-sm font-medium text-cyan-400 transition-all hover:border-cyan-400 hover:bg-cyan-400/10"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
+                </span>
+                דמואים חיים
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${demoOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+
+              {demoOpen && (
+                <div className="absolute top-full mt-2 left-0 w-52 rounded-xl border border-blue-900/60 bg-[#0D1E35]/95 backdrop-blur-sm shadow-xl shadow-black/40 overflow-hidden z-50">
+                  {DEMOS.map(({ href, label, badge, color, ping, border, hover }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      onClick={() => setDemoOpen(false)}
+                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium ${color} ${hover} border-b ${border} last:border-b-0 transition-colors`}
+                    >
+                      <span className="relative flex h-2 w-2 shrink-0">
+                        <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${ping} opacity-60`} />
+                        <span className={`relative inline-flex h-2 w-2 rounded-full ${ping}`} />
+                      </span>
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
             <button
               onClick={() => handleLink('contact')}
               className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold px-5 py-2.5 rounded-lg text-sm transition-all hover:shadow-lg hover:shadow-cyan-500/25"
@@ -135,26 +195,27 @@ export default function Navbar() {
               {label}
             </button>
           ))}
-          <Link
-            href="/demos/rag"
-            className="flex items-center justify-center gap-2 rounded-lg border border-cyan-500/40 py-3 text-center text-sm font-medium text-cyan-400 transition-all hover:bg-cyan-400/10"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
-            </span>
-            דמו חי — סוכן ידע ארגוני
-          </Link>
-          <Link
-            href="/demos/whatsapp"
-            className="flex items-center justify-center gap-2 rounded-lg border border-[#25D366]/40 py-3 text-center text-sm font-medium text-[#25D366] transition-all hover:bg-[#25D366]/10"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#25D366] opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#25D366]" />
-            </span>
-            דמו חי — WhatsApp
-          </Link>
+
+          {/* Mobile demos list */}
+          <div className="rounded-xl border border-blue-900/40 overflow-hidden">
+            <p className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-widest bg-[#0A1628]">
+              דמואים חיים
+            </p>
+            {DEMOS.map(({ href, label, color, ping, border, hover }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium ${color} ${hover} border-t ${border} transition-colors`}
+              >
+                <span className="relative flex h-2 w-2 shrink-0">
+                  <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${ping} opacity-60`} />
+                  <span className={`relative inline-flex h-2 w-2 rounded-full ${ping}`} />
+                </span>
+                {label}
+              </Link>
+            ))}
+          </div>
           <button onClick={() => handleLink('contact')} className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold px-5 py-3 rounded-lg text-center transition-colors mt-2">
             קביעת שיחת ייעוץ
           </button>
