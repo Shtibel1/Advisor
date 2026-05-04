@@ -76,7 +76,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       {
         method: 'POST',
         headers: {
-          Authorization: VOICEFLOW_API_KEY,
+          Authorization: VOICEFLOW_API_KEY!,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
