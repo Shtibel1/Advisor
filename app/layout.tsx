@@ -59,6 +59,11 @@ export const metadata: Metadata = {
       'הופכים בינה מלאכותית לרווח נקי בעסק שלך. פתרונות AI מוכנים לייצור – סוכן ידע ארגוני, צ׳אט-בוט חכם, ודוחות אוטומטיים.',
     images: ['/og-image.png'],
   },
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/apple-icon.svg',
+  },
   verification: {
     // TODO: Add your Google Search Console verification token
     // google: 'YOUR_GOOGLE_SEARCH_CONSOLE_TOKEN',

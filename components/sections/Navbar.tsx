@@ -12,20 +12,37 @@ const NAV_SECTIONS = [
   { id: 'contact',    label: 'צור קשר'  },
 ]
 
-const DEMOS = [
+type Demo = {
+  label: string
+  color: string
+  ping: string
+  border: string
+  hover: string
+} & ({ href: string; action?: never } | { action: () => void; href?: never })
+
+const DEMOS: Demo[] = [
   {
     href: '/demos/rag',
     label: 'סוכן ידע ארגוני',
-    badge: 'RAG',
     color: 'text-cyan-400',
     ping: 'bg-cyan-400',
     border: 'border-cyan-500/30',
     hover: 'hover:bg-cyan-400/10',
   },
   {
+    action: () => {
+      // @ts-expect-error voiceflow is injected by external script
+      window.voiceflow?.chat?.open()
+    },
+    label: "צ'אט-בוט חכם",
+    color: 'text-blue-400',
+    ping: 'bg-blue-400',
+    border: 'border-blue-500/30',
+    hover: 'hover:bg-blue-400/10',
+  },
+  {
     href: '/demos/whatsapp',
     label: 'צ׳אט-בוט WhatsApp',
-    badge: 'WhatsApp',
     color: 'text-[#25D366]',
     ping: 'bg-[#25D366]',
     border: 'border-[#25D366]/30',
@@ -34,7 +51,6 @@ const DEMOS = [
   {
     href: '/demos/finance',
     label: 'דוחות פיננסיים',
-    badge: 'Finance',
     color: 'text-violet-400',
     ping: 'bg-violet-400',
     border: 'border-violet-500/30',
@@ -151,20 +167,24 @@ export default function Navbar() {
 
               {demoOpen && (
                 <div className="absolute top-full mt-2 left-0 w-52 rounded-xl border border-blue-900/60 bg-[#0D1E35]/95 backdrop-blur-sm shadow-xl shadow-black/40 overflow-hidden z-50">
-                  {DEMOS.map(({ href, label, badge, color, ping, border, hover }) => (
-                    <Link
-                      key={href}
-                      href={href}
-                      onClick={() => setDemoOpen(false)}
-                      className={`flex items-center gap-3 px-4 py-3 text-sm font-medium ${color} ${hover} border-b ${border} last:border-b-0 transition-colors`}
-                    >
+                  {DEMOS.map((demo) => {
+                    const shared = `flex items-center gap-3 px-4 py-3 text-sm font-medium ${demo.color} ${demo.hover} border-b ${demo.border} last:border-b-0 transition-colors`
+                    const dot = (
                       <span className="relative flex h-2 w-2 shrink-0">
-                        <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${ping} opacity-60`} />
-                        <span className={`relative inline-flex h-2 w-2 rounded-full ${ping}`} />
+                        <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${demo.ping} opacity-60`} />
+                        <span className={`relative inline-flex h-2 w-2 rounded-full ${demo.ping}`} />
                       </span>
-                      {label}
-                    </Link>
-                  ))}
+                    )
+                    return demo.href ? (
+                      <Link key={demo.label} href={demo.href} onClick={() => setDemoOpen(false)} className={shared}>
+                        {dot}{demo.label}
+                      </Link>
+                    ) : (
+                      <button key={demo.label} onClick={() => { demo.action?.(); setDemoOpen(false) }} className={`w-full text-right ${shared}`}>
+                        {dot}{demo.label}
+                      </button>
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -201,20 +221,24 @@ export default function Navbar() {
             <p className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-widest bg-[#0A1628]">
               דמואים חיים
             </p>
-            {DEMOS.map(({ href, label, color, ping, border, hover }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMenuOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium ${color} ${hover} border-t ${border} transition-colors`}
-              >
+            {DEMOS.map((demo) => {
+              const shared = `flex items-center gap-3 px-4 py-3 text-sm font-medium ${demo.color} ${demo.hover} border-t ${demo.border} transition-colors`
+              const dot = (
                 <span className="relative flex h-2 w-2 shrink-0">
-                  <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${ping} opacity-60`} />
-                  <span className={`relative inline-flex h-2 w-2 rounded-full ${ping}`} />
+                  <span className={`absolute inline-flex h-full w-full animate-ping rounded-full ${demo.ping} opacity-60`} />
+                  <span className={`relative inline-flex h-2 w-2 rounded-full ${demo.ping}`} />
                 </span>
-                {label}
-              </Link>
-            ))}
+              )
+              return demo.href ? (
+                <Link key={demo.label} href={demo.href} onClick={() => setMenuOpen(false)} className={shared}>
+                  {dot}{demo.label}
+                </Link>
+              ) : (
+                <button key={demo.label} onClick={() => { demo.action?.(); setMenuOpen(false) }} className={`w-full text-right ${shared}`}>
+                  {dot}{demo.label}
+                </button>
+              )
+            })}
           </div>
           <button onClick={() => handleLink('contact')} className="bg-cyan-500 hover:bg-cyan-400 text-white font-bold px-5 py-3 rounded-lg text-center transition-colors mt-2">
             קביעת שיחת ייעוץ

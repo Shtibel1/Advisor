@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { DatabaseIcon, BotIcon, TrendingUpIcon, WhatsAppIcon, PhoneAgentIcon } from '@/components/ui/Icons'
 
@@ -34,6 +36,10 @@ const SERVICES = [
       'מענה בעברית ברמה גבוהה ומותאם מותג',
       'ניתוב חכם לנציג אנושי לפי צורך',
     ],
+    demoAction: () => {
+      // @ts-expect-error voiceflow is injected by external script
+      window.voiceflow?.chat?.open()
+    },
   },
   {
     Icon: TrendingUpIcon,
@@ -100,7 +106,7 @@ export default function ServicesSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 auto-rows-fr">
-          {SERVICES.map(({ Icon, gradientIcon, gradientBar, hoverBorder, badgeColor, dotColor, title, badge, desc, features, demoHref }) => (
+          {SERVICES.map(({ Icon, gradientIcon, gradientBar, hoverBorder, badgeColor, dotColor, title, badge, desc, features, demoHref, demoAction }) => (
             <div
               key={title}
               className={`relative bg-white rounded-2xl p-8 shadow-sm border border-gray-200 hover:shadow-2xl ${hoverBorder} transition-all duration-300 overflow-hidden`}
@@ -131,6 +137,18 @@ export default function ServicesSection() {
                   </span>
                   נסו את הדמו החי
                 </Link>
+              )}
+              {demoAction && (
+                <button
+                  onClick={demoAction}
+                  className="mt-6 w-full flex items-center justify-center gap-2 rounded-lg border border-blue-500 bg-blue-500/10 py-2.5 text-sm font-semibold text-blue-600 transition-all hover:bg-blue-500 hover:text-white"
+                >
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-500" />
+                  </span>
+                  פתחו את הצ׳אט החי
+                </button>
               )}
             </div>
           ))}
