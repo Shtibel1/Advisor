@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Assistant } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
+import AccessibilityMenu from '@/components/ui/AccessibilityMenu'
 
 // Load Assistant — a modern, clean Hebrew-optimized Google Font
 const assistant = Assistant({
@@ -79,7 +80,17 @@ export default function RootLayout({
   return (
     // lang="he" for Hebrew, dir="rtl" for Right-to-Left layout
     <html lang="he" dir="rtl" className={assistant.variable}>
-      <body className="font-assistant bg-white text-gray-900">{children}</body>
+      <body className="font-assistant bg-white text-gray-900">
+        {/* Skip to main content – required for keyboard accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:right-4 focus:z-[99999] focus:bg-cyan-500 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg focus:font-bold focus:text-sm"
+        >
+          דלג לתוכן הראשי
+        </a>
+        {children}
+        <AccessibilityMenu />
+      </body>
       <Script
         id="voiceflow-widget"
         strategy="afterInteractive"

@@ -20,6 +20,8 @@ const SERVICES = [
       'עדכון אוטומטי של בסיס הידע',
     ],
     demoHref: '/demos/rag',
+    demoBtn: 'border-cyan-500 bg-cyan-500/10 text-cyan-600 hover:bg-cyan-500',
+    demoPing: 'bg-cyan-500',
   },
   {
     Icon: BotIcon,
@@ -57,6 +59,8 @@ const SERVICES = [
       'ניתוח פיננסי בשפה טבעית',
     ],
     demoHref: '/demos/finance',
+    demoBtn: 'border-violet-500 bg-violet-500/10 text-violet-600 hover:bg-violet-500',
+    demoPing: 'bg-violet-500',
   },
   {
     Icon: WhatsAppIcon,
@@ -74,6 +78,8 @@ const SERVICES = [
       'חיבור למערכת ה-CRM לעדכון סטטוס לידים בזמן אמת',
     ],
     demoHref: '/demos/whatsapp',
+    demoBtn: 'border-green-500 bg-green-500/10 text-green-600 hover:bg-green-500',
+    demoPing: 'bg-green-500',
   },
   {
     Icon: PhoneAgentIcon,
@@ -90,6 +96,9 @@ const SERVICES = [
       'מענה אנושי וטבעי לשיחות נכנסות בעומסים',
       'תמלול וסיכום אוטומטי של כל שיחה לתוך ה-CRM',
     ],
+    demoHref: '/demos/voice-agent',
+    demoBtn: 'border-orange-500 bg-orange-500/10 text-orange-600 hover:bg-orange-500',
+    demoPing: 'bg-orange-500',
   },
 ]
 
@@ -106,10 +115,10 @@ export default function ServicesSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 auto-rows-fr">
-          {SERVICES.map(({ Icon, gradientIcon, gradientBar, hoverBorder, badgeColor, dotColor, title, badge, desc, features, demoHref, demoAction }) => (
+          {SERVICES.map(({ Icon, gradientIcon, gradientBar, hoverBorder, badgeColor, dotColor, title, badge, desc, features, demoHref, demoBtn, demoPing, demoAction }) => (
             <div
               key={title}
-              className={`relative bg-white rounded-2xl p-8 shadow-sm border border-gray-200 hover:shadow-2xl ${hoverBorder} transition-all duration-300 overflow-hidden`}
+              className={`relative bg-white rounded-2xl p-8 shadow-sm border border-gray-200 hover:shadow-2xl ${hoverBorder} transition-all duration-300 overflow-hidden flex flex-col`}
             >
               <div className={`absolute top-0 inset-x-0 h-1 ${gradientBar}`} />
               <div className={`w-14 h-14 ${gradientIcon} rounded-xl flex items-center justify-center mb-6 text-white shadow-lg`}>
@@ -129,11 +138,11 @@ export default function ServicesSection() {
               {demoHref && (
                 <Link
                   href={demoHref}
-                  className="mt-6 flex items-center justify-center gap-2 rounded-lg border border-cyan-500 bg-cyan-500/10 py-2.5 text-sm font-semibold text-cyan-600 transition-all hover:bg-cyan-500 hover:text-white"
+                  className={`mt-auto flex items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-semibold transition-all hover:text-white ${demoBtn ?? 'border-cyan-500 bg-cyan-500/10 text-cyan-600 hover:bg-cyan-500'}`}
                 >
                   <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-500 opacity-60" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500" />
+                    <span className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${demoPing ?? 'bg-cyan-500'}`} />
+                    <span className={`relative inline-flex h-2 w-2 rounded-full ${demoPing ?? 'bg-cyan-500'}`} />
                   </span>
                   נסו את הדמו החי
                 </Link>
@@ -141,7 +150,7 @@ export default function ServicesSection() {
               {demoAction && (
                 <button
                   onClick={demoAction}
-                  className="mt-6 w-full flex items-center justify-center gap-2 rounded-lg border border-blue-500 bg-blue-500/10 py-2.5 text-sm font-semibold text-blue-600 transition-all hover:bg-blue-500 hover:text-white"
+                  className="mt-auto w-full flex items-center justify-center gap-2 rounded-lg border border-blue-500 bg-blue-500/10 py-2.5 text-sm font-semibold text-blue-600 transition-all hover:bg-blue-500 hover:text-white"
                 >
                   <span className="relative flex h-2 w-2">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500 opacity-60" />

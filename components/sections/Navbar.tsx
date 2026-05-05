@@ -56,6 +56,14 @@ const DEMOS: Demo[] = [
     border: 'border-violet-500/30',
     hover: 'hover:bg-violet-400/10',
   },
+  {
+    href: '/demos/voice-agent',
+    label: 'נציגה קולית AI',
+    color: 'text-orange-400',
+    ping: 'bg-orange-400',
+    border: 'border-orange-500/30',
+    hover: 'hover:bg-orange-400/10',
+  },
 ]
 
 function scrollToSection(id: string) {
@@ -149,6 +157,14 @@ export default function Navbar() {
               </button>
             ))}
 
+            {/* Blog link */}
+            <Link
+              href="/blog"
+              className="font-medium text-gray-300 hover:text-cyan-400 transition-colors duration-200"
+            >
+              בלוג
+            </Link>
+
             {/* Demos dropdown */}
             <div className="relative" ref={demoRef}>
               <button
@@ -215,6 +231,15 @@ export default function Navbar() {
               {label}
             </button>
           ))}
+
+          {/* Blog link */}
+          <Link
+            href="/blog"
+            onClick={() => setMenuOpen(false)}
+            className="py-2 font-medium border-b border-blue-900/30 text-gray-300 hover:text-cyan-400 transition-colors text-right"
+          >
+            בלוג
+          </Link>
 
           {/* Mobile demos list */}
           <div className="rounded-xl border border-blue-900/40 overflow-hidden">

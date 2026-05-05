@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { LinkedInIcon } from '@/components/ui/Icons'
 
 export default function Footer() {
@@ -19,7 +20,7 @@ export default function Footer() {
           </p>
 
           {/* Social & Email Links */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6 flex-wrap justify-center">
             {/* ⚠️  Update this LinkedIn URL to your actual profile */}
             <a
               href="https://www.linkedin.com/in/nadav"
@@ -37,6 +38,18 @@ export default function Footer() {
             >
               nadavshtibel@gmail.com
             </a>
+            <Link
+              href="/blog"
+              className="text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+            >
+              בלוג
+            </Link>
+            <Link
+              href="/accessibility"
+              className="text-gray-400 hover:text-cyan-400 transition-colors text-sm"
+            >
+              הצהרת נגישות
+            </Link>
           </div>
 
         </div>

@@ -12,11 +12,13 @@ export default function Home() {
     <div className="font-assistant">
       <CursorGlow />
       <Navbar />
+      <main id="main-content">
       <HeroSection />
       <PainPointsSection />
       <ServicesSection />
       <AboutSection />
       <ContactSection />
+      </main>
       <Footer />
     </div>
   )
