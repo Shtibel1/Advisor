@@ -49,7 +49,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   console.log('[whatsapp] Incoming message from:', from, '| body:', userMessage)
 
   if (!userMessage || !from) {
-    console.error('[whatsapp] Missing Body or From. formData keys:', [...formData.keys()])
+    console.error('[whatsapp] Missing Body or From. formData keys:', Array.from(formData.keys()))
     return NextResponse.json({ error: 'Missing Body or From fields' }, { status: 400 })
   }
 
