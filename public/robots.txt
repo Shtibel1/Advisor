@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 
-# Sitemap — TODO: replace with your actual production domain
-Sitemap: https://nadavai.co.il/sitemap.xml
+User-agent: facebookexternalhit
+Allow: /
+
+Sitemap: https://nadav-shtibel.com/sitemap.xml

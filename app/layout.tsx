@@ -91,7 +91,13 @@ export default function RootLayout({
                   verify: { projectID: '69f7cefbd8bf4ff14739ce53' },
                   url: 'https://general-runtime.voiceflow.com',
                   versionID: 'production',
-                  voice: { url: 'https://runtime-api.voiceflow.com' }
+                  voice: { url: 'https://runtime-api.voiceflow.com' },
+                  launch: {
+                    event: {
+                      type: 'launch',
+                      payload: { channel: 'website' }
+                    }
+                  }
                 });
               }
               v.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs';

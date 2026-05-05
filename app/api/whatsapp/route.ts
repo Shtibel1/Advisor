@@ -78,6 +78,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         },
         body: JSON.stringify({
           action: { type: 'text', payload: userMessage },
+          config: { variables: { channel: 'whatsapp' } },
         }),
       }
     )
