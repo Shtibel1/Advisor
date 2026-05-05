@@ -134,9 +134,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const finalReply = replyText || 'מצטער, לא הצלחתי לעבד את בקשתך.'
     console.log('[vapi-voiceflow] Sending reply:', finalReply)
 
-    // 7. Return the response in OpenAI-compatible format that Vapi expects.
-    //    finish_reason: 'stop' signals to Vapi that the assistant is done speaking.
+    // 7. Return a full OpenAI-compatible non-streaming response.
+    //    Vapi validates the shape of this object; missing fields can cause silent hangs.
     return NextResponse.json({
+      id: (callId ?? 'chatcmpl-vapi'),
+      object: 'chat.completion',
+      created: Math.floor(Date.now() / 1000),
+      model: 'voiceflow-bridge',
       choices: [
         {
           index: 0,
@@ -144,9 +148,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             role: 'assistant',
             content: finalReply,
           },
+          logprobs: null,
           finish_reason: 'stop',
         },
       ],
+      usage: {
+        prompt_tokens: 0,
+        completion_tokens: 0,
+        total_tokens: 0,
+      },
     })
   } catch (error: unknown) {
     const err = error as Error
