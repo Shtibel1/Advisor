@@ -14,6 +14,9 @@ const SITE_URL = 'https://nadav-shtibel.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  other: {
+    'facebook-domain-verification': '47nhlp5d742cj9hr9we3zjouu6xstw',
+  },
   title: {
     default: 'Nadav AI – יועץ ומומחה בינה מלאכותית לעסקים',
     template: '%s | Nadav AI',
