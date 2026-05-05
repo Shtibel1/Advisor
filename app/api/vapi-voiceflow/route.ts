@@ -51,7 +51,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   if (messageType !== 'assistant-request') {
     console.log('[vapi-voiceflow] Ignoring message type:', messageType)
-    return NextResponse.json({ status: 'ignored' }, { status: 200 })
+    return new NextResponse(null, { status: 200 })
   }
 
   // 3. Extract the user's spoken message.
@@ -78,7 +78,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // 5. Derive a stable userID for Voiceflow conversation state.
   //    Prefer the Vapi call ID so each call gets its own session.
   //    Fall back to the caller's phone number if available.
-  const callObj = message?.call as Record<string, unknown> | undefined
+  //    Vapi sometimes puts `call` at the top-level body, sometimes nested under `message`.
+  const callObj =
+    (body.call as Record<string, unknown> | undefined) ??
+    (message?.call as Record<string, unknown> | undefined)
   const callId = callObj?.id as string | undefined
   const phoneNumber =
     (callObj?.phoneNumber as Record<string, unknown> | undefined)?.number as string | undefined
