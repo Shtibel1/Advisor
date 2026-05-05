@@ -131,12 +131,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const finalReply = replyText || 'מצטער, לא הצלחתי לעבד את בקשתך.'
     console.log('[vapi-voiceflow] Sending reply:', finalReply)
 
-    // 8. Return the response in the format Vapi expects
+    // 8. Return the response in the format Vapi expects.
+    //    `choices` with finish_reason: 'stop' signals to Vapi that the assistant
+    //    has finished speaking and it's now the user's turn.
     return NextResponse.json({
       message: {
         role: 'assistant',
         content: finalReply,
       },
+      choices: [
+        {
+          message: {
+            role: 'assistant',
+            content: finalReply,
+          },
+          finish_reason: 'stop',
+        },
+      ],
     })
   } catch (error: unknown) {
     const err = error as Error
