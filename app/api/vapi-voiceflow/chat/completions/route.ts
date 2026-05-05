@@ -131,32 +131,67 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       .map((trace) => trace.payload!.message!)
       .join(' ')
 
-    const finalReply = replyText || 'מצטער, לא הצלחתי לעבד את בקשתך.'
+    // Strip emojis – TTS engines (e.g. ElevenLabs) can silently hang or skip
+    // audio when they encounter emoji characters in the text.
+    const stripped = (replyText || 'מצטער, לא הצלחתי לעבד את בקשתך.').replace(
+      /[\u{1F000}-\u{1FFFF}\u{2600}-\u{27FF}\u{2B00}-\u{2BFF}\u{FE00}-\u{FEFF}\u{1F900}-\u{1F9FF}]/gu,
+      ''
+    ).trim()
+    const finalReply = stripped || 'מצטער, לא הצלחתי לעבד את בקשתך.'
     console.log('[vapi-voiceflow] Sending reply:', finalReply)
 
-    // 7. Return a full OpenAI-compatible non-streaming response.
-    //    Vapi validates the shape of this object; missing fields can cause silent hangs.
+    const responseId = callId ?? 'chatcmpl-vapi'
+    const created = Math.floor(Date.now() / 1000)
+    const isStream = body.stream === true
+
+    // 7. Return SSE stream when Vapi requests it (stream: true), otherwise plain JSON.
+    //    Vapi always sends stream: true with OpenAI-compatible Custom LLMs.
+    if (isStream) {
+      // Build the two required SSE chunks:
+      //   chunk 1 – carries the full content in delta
+      //   chunk 2 – finish signal (empty delta, finish_reason: 'stop')
+      const chunk1 = JSON.stringify({
+        id: responseId,
+        object: 'chat.completion.chunk',
+        created,
+        model: 'voiceflow-bridge',
+        choices: [{ index: 0, delta: { role: 'assistant', content: finalReply }, finish_reason: null }],
+      })
+      const chunk2 = JSON.stringify({
+        id: responseId,
+        object: 'chat.completion.chunk',
+        created,
+        model: 'voiceflow-bridge',
+        choices: [{ index: 0, delta: {}, finish_reason: 'stop' }],
+      })
+
+      const sseBody = `data: ${chunk1}\n\ndata: ${chunk2}\n\ndata: [DONE]\n\n`
+
+      return new NextResponse(sseBody, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/event-stream',
+          'Cache-Control': 'no-cache',
+          Connection: 'keep-alive',
+        },
+      })
+    }
+
+    // Non-streaming fallback – full OpenAI chat.completion object
     return NextResponse.json({
-      id: (callId ?? 'chatcmpl-vapi'),
+      id: responseId,
       object: 'chat.completion',
-      created: Math.floor(Date.now() / 1000),
+      created,
       model: 'voiceflow-bridge',
       choices: [
         {
           index: 0,
-          message: {
-            role: 'assistant',
-            content: finalReply,
-          },
+          message: { role: 'assistant', content: finalReply },
           logprobs: null,
           finish_reason: 'stop',
         },
       ],
-      usage: {
-        prompt_tokens: 0,
-        completion_tokens: 0,
-        total_tokens: 0,
-      },
+      usage: { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 },
     })
   } catch (error: unknown) {
     const err = error as Error
