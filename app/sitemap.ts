@@ -1,7 +1,6 @@
 import { MetadataRoute } from 'next'
 
-// TODO: Replace with your actual production domain
-const SITE_URL = 'https://nadavai.co.il'
+const SITE_URL = 'https://nadav-shtibel.com'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

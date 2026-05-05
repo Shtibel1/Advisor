@@ -10,8 +10,7 @@ const assistant = Assistant({
   display: 'swap',
 })
 
-// TODO: Replace with your actual production domain
-const SITE_URL = 'https://nadavai.co.il'
+const SITE_URL = 'https://nadav-shtibel.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -49,15 +48,14 @@ export const metadata: Metadata = {
     title: 'Nadav AI – יועץ ומומחה בינה מלאכותית לעסקים',
     description:
       'הופכים בינה מלאכותית לרווח נקי בעסק שלך. פתרונות AI מוכנים לייצור – סוכן ידע ארגוני, צ׳אט-בוט חכם, ודוחות אוטומטיים.',
-    // TODO: Add an OG image at public/og-image.png (1200×630 px)
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Nadav AI' }],
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'Nadav AI' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Nadav AI – יועץ ומומחה בינה מלאכותית לעסקים',
     description:
       'הופכים בינה מלאכותית לרווח נקי בעסק שלך. פתרונות AI מוכנים לייצור – סוכן ידע ארגוני, צ׳אט-בוט חכם, ודוחות אוטומטיים.',
-    images: ['/og-image.png'],
+    images: ['/opengraph-image'],
   },
   icons: {
     icon: '/icon.svg',
