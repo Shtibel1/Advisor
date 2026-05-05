@@ -1,22 +1,17 @@
 /**
  * Twilio WhatsApp Webhook → Voiceflow Dialog API
  *
- * SETUP:
- *   npm i twilio
- *
- * REQUIRED .env.local VARIABLES:
- *   TWILIO_ACCOUNT_SID     – from https://console.twilio.com (Account Info panel)
- *   TWILIO_AUTH_TOKEN      – from https://console.twilio.com (Account Info panel)
- *   TWILIO_PHONE_NUMBER    – your Twilio WhatsApp sender, e.g. "whatsapp:+14155238886"
- *   VOICEFLOW_API_KEY      – from https://creator.voiceflow.com → Settings → API Keys
+ * REQUIRED ENV VARIABLES:
+ *   VOICEFLOW_API_KEY  – from https://creator.voiceflow.com → Settings → API Keys
  *
  * TWILIO WEBHOOK:
  *   Point your Twilio WhatsApp sandbox/number "WHEN A MESSAGE COMES IN" to:
  *   https://<your-domain>/api/whatsapp   (HTTP POST)
+ *
+ * NOTE: Replies are sent via TwiML response (no Twilio SDK needed for sending).
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import twilio from 'twilio'
 
 const VOICEFLOW_RUNTIME = 'https://general-runtime.voiceflow.com'
 
@@ -28,56 +23,58 @@ interface VoiceflowTrace {
   }
 }
 
+/** Return a TwiML <Message> response so Twilio delivers it automatically. */
+function twimlReply(body: string): NextResponse {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?><Response><Message>${body}</Message></Response>`
+  return new NextResponse(xml, {
+    status: 200,
+    headers: { 'Content-Type': 'text/xml' },
+  })
+}
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   // 1. Parse the URL-encoded body that Twilio sends
   let formData: URLSearchParams
   try {
     const rawBody = await req.text()
     formData = new URLSearchParams(rawBody)
-  } catch {
+  } catch (err) {
+    console.error('[whatsapp] Failed to parse body:', err)
     return NextResponse.json({ error: 'Failed to parse request body' }, { status: 400 })
   }
 
   const userMessage = formData.get('Body')?.trim()
   const from = formData.get('From') // e.g. "whatsapp:+972501234567"
 
+  console.log('[whatsapp] Incoming message from:', from, '| body:', userMessage)
+
   if (!userMessage || !from) {
+    console.error('[whatsapp] Missing Body or From. formData keys:', [...formData.keys()])
     return NextResponse.json({ error: 'Missing Body or From fields' }, { status: 400 })
   }
 
-  // 2. Use the sender's WhatsApp number as the unique Voiceflow userID
-  const userID = encodeURIComponent(from)
+  // 2. Validate required environment variables
+  const { VOICEFLOW_API_KEY } = process.env
 
-  // 3. Validate required environment variables
-  const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER, VOICEFLOW_API_KEY } =
-    process.env
-
-  const missingVars = [
-    ['TWILIO_ACCOUNT_SID', TWILIO_ACCOUNT_SID],
-    ['TWILIO_AUTH_TOKEN', TWILIO_AUTH_TOKEN],
-    ['TWILIO_PHONE_NUMBER', TWILIO_PHONE_NUMBER],
-    ['VOICEFLOW_API_KEY', VOICEFLOW_API_KEY],
-  ]
-    .filter(([, value]) => !value)
-    .map(([name]) => name)
-
-  if (missingVars.length > 0) {
-    console.error('[whatsapp/route] Missing env vars:', missingVars.join(', '))
-    return NextResponse.json(
-      { error: 'Server misconfiguration', missing: missingVars },
-      { status: 500 }
-    )
+  if (!VOICEFLOW_API_KEY) {
+    console.error('[whatsapp] Missing env var: VOICEFLOW_API_KEY')
+    return NextResponse.json({ error: 'Server misconfiguration: missing VOICEFLOW_API_KEY' }, { status: 500 })
   }
+
+  // 3. Use the sender's WhatsApp number as the unique Voiceflow userID
+  const userID = encodeURIComponent(from)
 
   try {
     // 4. Call the Voiceflow Dialog API (Interact endpoint)
+    console.log('[whatsapp] Calling Voiceflow for userID:', userID)
     const voiceflowRes = await fetch(
       `${VOICEFLOW_RUNTIME}/state/user/${userID}/interact`,
       {
         method: 'POST',
         headers: {
-          Authorization: VOICEFLOW_API_KEY!,
+          Authorization: VOICEFLOW_API_KEY,
           'Content-Type': 'application/json',
+          versionID: 'production',
         },
         body: JSON.stringify({
           action: { type: 'text', payload: userMessage },
@@ -87,31 +84,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     if (!voiceflowRes.ok) {
       const errorText = await voiceflowRes.text()
-      console.error('[whatsapp/route] Voiceflow error:', voiceflowRes.status, errorText)
-      return NextResponse.json({ error: 'Voiceflow API error' }, { status: 502 })
+      console.error('[whatsapp] Voiceflow error:', voiceflowRes.status, errorText)
+      return twimlReply('מצטער, שגיאה בעיבוד הבקשה.')
     }
 
     // 5. Parse the trace array and collect all text-type messages
     const traces: VoiceflowTrace[] = await voiceflowRes.json()
+    console.log('[whatsapp] Voiceflow traces:', JSON.stringify(traces))
+
     const replyText = traces
       .filter((trace) => trace.type === 'text' && trace.payload?.message)
       .map((trace) => trace.payload!.message!)
       .join('\n')
 
-    const finalReply = replyText || 'מצטער, לא הצלחתי לעבד את בקשתך.' // fallback message
+    const finalReply = replyText || 'מצטער, לא הצלחתי לעבד את בקשתך.'
+    console.log('[whatsapp] Sending reply:', finalReply)
 
-    // 6. Send the reply back to the user via Twilio WhatsApp
-    const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-    await client.messages.create({
-      from: TWILIO_PHONE_NUMBER,
-      to: from,
-      body: finalReply,
-    })
-
-    // 7. Return 200 OK so Twilio knows the webhook was handled successfully
-    return new NextResponse(null, { status: 200 })
-  } catch (error) {
-    console.error('[whatsapp/route] Unexpected error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    // 6. Reply directly via TwiML (no Twilio SDK needed)
+    return twimlReply(finalReply)
+  } catch (error: unknown) {
+    const err = error as Error
+    console.error('[whatsapp] Unexpected error:', err?.message, err?.stack)
+    return NextResponse.json({ error: 'Internal server error', detail: err?.message }, { status: 500 })
   }
 }

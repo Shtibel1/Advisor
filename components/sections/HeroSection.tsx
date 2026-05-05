@@ -64,10 +64,7 @@ export default function HeroSection() {
 
         {/* Tech Logos Strip */}
         <div className="mb-10">
-          <p className="text-xs font-semibold uppercase tracking-widest text-blue-400/40 mb-5">
-            Technologies &amp; Integrations
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-9 gap-y-5">
+          <div className="flex flex-wrap justify-center items-center gap-x-9 gap-y-5 mb-5">
             {TECH_LOGOS.map(({ Icon, label, hoverClass }) => (
               <div
                 key={label}
@@ -78,6 +75,9 @@ export default function HeroSection() {
               </div>
             ))}
           </div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-blue-400/40">
+            Technologies &amp; Integrations
+          </p>
         </div>
 
         {/* Status Badge */}
