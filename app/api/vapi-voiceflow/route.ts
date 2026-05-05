@@ -44,20 +44,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Failed to parse request body' }, { status: 400 })
   }
 
-  // 2. Extract the user's spoken message
+  // 2. Filter by message type – only process assistant-request messages.
+  //    Vapi also sends status-update, tool-calls, etc. which carry no user text.
   const message = body.message as Record<string, unknown> | undefined
-  const userMessage =
+  const messageType = message?.type as string | undefined
+
+  if (messageType !== 'assistant-request') {
+    console.log('[vapi-voiceflow] Ignoring message type:', messageType)
+    return NextResponse.json({ status: 'ignored' }, { status: 200 })
+  }
+
+  // 3. Extract the user's spoken message.
+  //    If empty (e.g. call just started), default to a greeting so Voiceflow
+  //    triggers the opening flow instead of receiving a blank action.
+  const rawMessage =
     (message?.content as string | undefined)?.trim() ||
     (message?.transcript as string | undefined)?.trim()
+  const userMessage = rawMessage || 'היי'
 
   console.log('[vapi-voiceflow] Incoming message:', userMessage)
 
-  if (!userMessage) {
-    console.error('[vapi-voiceflow] Missing user message in body:', JSON.stringify(body))
-    return NextResponse.json({ error: 'Missing user message content' }, { status: 400 })
-  }
-
-  // 3. Validate required environment variables
+  // 4. Validate required environment variables
   const { VOICEFLOW_API_KEY } = process.env
 
   if (!VOICEFLOW_API_KEY) {
@@ -68,7 +75,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     )
   }
 
-  // 4. Derive a stable userID for Voiceflow conversation state.
+  // 5. Derive a stable userID for Voiceflow conversation state.
   //    Prefer the Vapi call ID so each call gets its own session.
   //    Fall back to the caller's phone number if available.
   const callObj = message?.call as Record<string, unknown> | undefined
@@ -79,7 +86,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const userID = encodeURIComponent(callId ?? phoneNumber ?? 'vapi-anonymous')
 
   try {
-    // 5. Call the Voiceflow Dialog API (Interact endpoint)
+    // 6. Call the Voiceflow Dialog API (Interact endpoint)
     console.log('[vapi-voiceflow] Calling Voiceflow for userID:', userID)
     const voiceflowRes = await fetch(
       `${VOICEFLOW_RUNTIME}/state/user/${userID}/interact`,
@@ -106,7 +113,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       )
     }
 
-    // 6. Parse the trace array and collect all speak/text messages
+    // 7. Parse the trace array and collect all speak/text messages
     const traces: VoiceflowTrace[] = await voiceflowRes.json()
     console.log('[vapi-voiceflow] Voiceflow traces:', JSON.stringify(traces))
 
@@ -121,7 +128,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const finalReply = replyText || 'מצטער, לא הצלחתי לעבד את בקשתך.'
     console.log('[vapi-voiceflow] Sending reply:', finalReply)
 
-    // 7. Return the response in the format Vapi expects
+    // 8. Return the response in the format Vapi expects
     return NextResponse.json({
       message: {
         role: 'assistant',
