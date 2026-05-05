@@ -6,7 +6,7 @@ import { MessageCircle, Smartphone, QrCode, ChevronRight, CheckCircle2 } from 'l
 
 // ─── WhatsApp config ──────────────────────────────────────────────────────────
 // Replace with your actual WhatsApp business number (international format, no +)
-const WA_NUMBER = '972501234567'
+const WA_NUMBER = '972533883204'
 const WA_MESSAGE = encodeURIComponent('היי, הגעתי מהדמו באתר')
 const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`
 

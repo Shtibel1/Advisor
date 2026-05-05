@@ -62,24 +62,6 @@ export default function HeroSection() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-24">
 
-        {/* Tech Logos Strip */}
-        <div className="mb-10">
-          <div className="flex flex-wrap justify-center items-center gap-x-9 gap-y-5 mb-5">
-            {TECH_LOGOS.map(({ Icon, label, hoverClass }) => (
-              <div
-                key={label}
-                className={`flex flex-col items-center gap-1.5 text-white/20 ${hoverClass} transition-colors duration-300 cursor-default`}
-              >
-                <Icon size={24} />
-                <span className="text-[10px] tracking-wide font-medium">{label}</span>
-              </div>
-            ))}
-          </div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-blue-400/40">
-            Technologies &amp; Integrations
-          </p>
-        </div>
-
         {/* Status Badge */}
         <div className="inline-flex items-center gap-2 bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 px-4 py-2 rounded-full text-sm font-medium mb-8">
           <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse flex-shrink-0" />
@@ -134,6 +116,24 @@ export default function HeroSection() {
           >
             גלה את השירותים <MdKeyboardArrowDown size={22} />
           </button>
+        </div>
+
+        {/* Tech Logos Strip */}
+        <div className="mt-10">
+          <div className="flex flex-wrap justify-center items-center gap-x-9 gap-y-5 mb-5">
+            {TECH_LOGOS.map(({ Icon, label, hoverClass }) => (
+              <div
+                key={label}
+                className={`flex flex-col items-center gap-1.5 text-white/20 ${hoverClass} transition-colors duration-300 cursor-default`}
+              >
+                <Icon size={24} />
+                <span className="text-[10px] tracking-wide font-medium">{label}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs font-semibold uppercase tracking-widest text-blue-400/40">
+            Technologies &amp; Integrations
+          </p>
         </div>
       </div>
     </section>
