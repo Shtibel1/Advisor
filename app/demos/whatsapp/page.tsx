@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { MessageCircle, Smartphone, QrCode, ChevronRight, CheckCircle2 } from 'lucide-react'
+import { MessageCircle, Smartphone, ChevronRight, CheckCircle2 } from 'lucide-react'
 
 // ─── WhatsApp config ──────────────────────────────────────────────────────────
 // Replace with your actual WhatsApp business number (international format, no +)
@@ -39,24 +39,6 @@ const CHAT_MESSAGES = [
 ]
 
 // ─── Steps ────────────────────────────────────────────────────────────────────
-const STEPS = [
-  {
-    icon: QrCode,
-    title: 'שלב 1 — סרקו את הברקוד',
-    desc: 'סרקו את קוד ה-QR עם המצלמה של הטלפון, או לחצו על הכפתור הירוק למטה כדי לפתוח את השיחה ישירות.',
-  },
-  {
-    icon: MessageCircle,
-    title: 'שלב 2 — שלחו את ההודעה',
-    desc: 'תוצג הודעה מוכנה: "היי, הגעתי מהדמו באתר". פשוט לחצו שלח — זה הכל.',
-  },
-  {
-    icon: Smartphone,
-    title: 'שלב 3 — שוחחו עם הנציג',
-    desc: 'נסו לשאול על מחירים, לבקש לתזמן פגישה, או לברר את שעות הפעילות — הכל בשפה טבעית.',
-  },
-]
-
 // ─── Typing animation dots ────────────────────────────────────────────────────
 function TypingDots() {
   return (
@@ -198,82 +180,6 @@ function PhoneMockup() {
   )
 }
 
-// ─── QR Placeholder ───────────────────────────────────────────────────────────
-function QRCodePlaceholder() {
-  return (
-    <div className="flex flex-col items-center gap-3">
-      <div className="relative p-3 bg-white rounded-2xl shadow-lg shadow-black/40">
-        {/* SVG QR code visual placeholder */}
-        <svg
-          width="140"
-          height="140"
-          viewBox="0 0 140 140"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-label="QR Code placeholder"
-        >
-          {/* Top-left finder */}
-          <rect x="10" y="10" width="40" height="40" rx="4" fill="#111827" />
-          <rect x="16" y="16" width="28" height="28" rx="2" fill="white" />
-          <rect x="22" y="22" width="16" height="16" rx="1" fill="#111827" />
-          {/* Top-right finder */}
-          <rect x="90" y="10" width="40" height="40" rx="4" fill="#111827" />
-          <rect x="96" y="16" width="28" height="28" rx="2" fill="white" />
-          <rect x="102" y="22" width="16" height="16" rx="1" fill="#111827" />
-          {/* Bottom-left finder */}
-          <rect x="10" y="90" width="40" height="40" rx="4" fill="#111827" />
-          <rect x="16" y="96" width="28" height="28" rx="2" fill="white" />
-          <rect x="22" y="102" width="16" height="16" rx="1" fill="#111827" />
-          {/* Data modules — decorative pattern */}
-          {[60, 70, 80, 60, 70, 80, 60, 70, 80].map((x, i) => (
-            <rect
-              key={`r${i}`}
-              x={x}
-              y={[10, 10, 10, 25, 25, 25, 40, 40, 40][i]}
-              width="8"
-              height="8"
-              rx="1.5"
-              fill="#111827"
-            />
-          ))}
-          {[10, 25, 40, 10, 25, 40, 10, 25, 40].map((y, i) => (
-            <rect
-              key={`c${i}`}
-              x={[10, 10, 10, 55, 55, 55, 80, 80, 80][i]}
-              y={y + 60}
-              width="8"
-              height="8"
-              rx="1.5"
-              fill="#111827"
-            />
-          ))}
-          {/* Center data block */}
-          {[55, 68, 81, 55, 68, 81, 55, 68, 81].map((x, i) => (
-            <rect
-              key={`m${i}`}
-              x={x}
-              y={[55, 55, 55, 68, 68, 68, 81, 81, 81][i]}
-              width="9"
-              height="9"
-              rx="1.5"
-              fill={[true, false, true, false, true, false, true, false, true][i] ? '#111827' : 'white'}
-            />
-          ))}
-        </svg>
-        {/* WhatsApp icon overlay */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center shadow">
-            <MessageCircle className="w-4 h-4 text-white" />
-          </div>
-        </div>
-      </div>
-      <p className="text-xs text-slate-500 text-center">
-        *עדכנו את מספר הטלפון בקוד לברקוד אמיתי
-      </p>
-    </div>
-  )
-}
-
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function WhatsAppDemoPage() {
   return (
@@ -325,57 +231,45 @@ export default function WhatsAppDemoPage() {
           <div className="flex flex-col gap-8">
             {/* Steps */}
             <div className="flex flex-col gap-6">
-              {STEPS.map((step, i) => {
-                const Icon = step.icon
-                return (
-                  <div
-                    key={i}
-                    className="flex gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-5 hover:border-[#25D366]/40 transition-colors"
-                  >
-                    <div className="shrink-0 w-11 h-11 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center mt-0.5">
-                      <Icon className="w-5 h-5 text-[#25D366]" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-white mb-1">{step.title}</h3>
-                      <p className="text-sm text-slate-400 leading-relaxed">{step.desc}</p>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-
-            {/* QR + CTA grouped */}
-            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 flex flex-col items-center gap-6">
-              <QRCodePlaceholder />
-
-              <div className="w-full flex flex-col items-center gap-3">
-                <div className="flex items-center gap-3 w-full">
-                  <div className="flex-1 h-px bg-slate-700" />
-                  <span className="text-xs text-slate-500">או</span>
-                  <div className="flex-1 h-px bg-slate-700" />
+              {/* Step 1 — WhatsApp CTA */}
+              <div className="flex gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-5 hover:border-[#25D366]/40 transition-colors">
+                <div className="shrink-0 w-11 h-11 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center mt-0.5">
+                  <MessageCircle className="w-5 h-5 text-[#25D366]" />
                 </div>
+                <div className="flex-1">
+                  <h3 className="font-bold text-white mb-3">שלב 1 — התחילו שיחה</h3>
+                  <a
+                    href={WA_LINK}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                      group w-full inline-flex items-center justify-center gap-3
+                      rounded-2xl px-6 py-3.5 font-bold text-base text-white
+                      bg-[#25D366] hover:bg-[#20bc5a] active:scale-[0.98]
+                      shadow-lg shadow-[#25D366]/25 hover:shadow-[#25D366]/40
+                      transition-all duration-200
+                    "
+                  >
+                    <MessageCircle className="w-5 h-5 shrink-0 transition-transform group-hover:rotate-6" />
+                    פתחו שיחה בוואטסאפ
+                  </a>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-2">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#25D366]/70" />
+                    ללא הרשמה · פרטיותך נשמרת
+                  </div>
+                </div>
+              </div>
 
-                {/* WhatsApp CTA button */}
-                <a
-                  href={WA_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                    group w-full inline-flex items-center justify-center gap-3
-                    rounded-2xl px-6 py-4 font-bold text-base text-white
-                    bg-[#25D366] hover:bg-[#20bc5a] active:scale-[0.98]
-                    shadow-lg shadow-[#25D366]/25 hover:shadow-[#25D366]/40
-                    transition-all duration-200
-                  "
-                >
-                  <MessageCircle className="w-5 h-5 shrink-0 transition-transform group-hover:rotate-6" />
-                  התחל שיחה בוואטסאפ
-                </a>
-
-                {/* Trust line */}
-                <div className="flex items-center gap-1.5 text-xs text-slate-500">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#25D366]/70" />
-                  ללא הרשמה · פרטיותך נשמרת · חוויה מלאה בדקה אחת
+              {/* Step 2 — Chat */}
+              <div className="flex gap-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-5 hover:border-[#25D366]/40 transition-colors">
+                <div className="shrink-0 w-11 h-11 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center mt-0.5">
+                  <Smartphone className="w-5 h-5 text-[#25D366]" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-white mb-1">שלב 2 — שוחחו עם הנציג</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    נסו לשאול על מחירים, לבקש לתזמן פגישה, או לברר את שעות הפעילות — הכל בשפה טבעית.
+                  </p>
                 </div>
               </div>
             </div>

@@ -133,10 +133,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
     // Strip emojis – TTS engines (e.g. ElevenLabs) can silently hang or skip
     // audio when they encounter emoji characters in the text.
-    const stripped = (replyText || 'מצטער, לא הצלחתי לעבד את בקשתך.').replace(
-      /[\u{1F000}-\u{1FFFF}\u{2600}-\u{27FF}\u{2B00}-\u{2BFF}\u{FE00}-\u{FEFF}\u{1F900}-\u{1F9FF}]/gu,
-      ''
-    ).trim()
+    // Using codePointAt instead of a /u regex to stay compatible with all TS targets.
+    const stripped = Array.from(replyText || 'מצטער, לא הצלחתי לעבד את בקשתך.')
+      .filter((char) => {
+        const cp = char.codePointAt(0) ?? 0
+        return !(
+          (cp >= 0x1f000 && cp <= 0x1ffff) ||
+          (cp >= 0x2600  && cp <= 0x27ff)  ||
+          (cp >= 0x2b00  && cp <= 0x2bff)  ||
+          (cp >= 0xfe00  && cp <= 0xfeff)  ||
+          (cp >= 0x1f900 && cp <= 0x1f9ff)
+        )
+      })
+      .join('')
+      .trim()
     const finalReply = stripped || 'מצטער, לא הצלחתי לעבד את בקשתך.'
     console.log('[vapi-voiceflow] Sending reply:', finalReply)
 
