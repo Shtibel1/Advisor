@@ -72,14 +72,12 @@ export default function HeroSection() {
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.2] mb-6 tracking-tight">
           <ProximityGlowText text="הופך בינה מלאכותית" />
           <br />
-          <ProximityGlowText text="לרווח נקי בעסק שלך" isGradient />
+          <ProximityGlowText text="לכוח עבודה בעסק שלך" isGradient />
         </h1>
 
         {/* Subheadline */}
         <p className="text-lg sm:text-xl md:text-2xl text-blue-200/75 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
-          אני לא רק מייעץ &ndash;{' '}
-          <strong className="text-white font-semibold">אני מממש</strong>.
-          {' '}פתרונות AI מוכנים לייצור, משולבים בצורה מאובטחת בתהליכי העסק שלך.
+          פיתוח והטמעה של סוכני AI אוטומטיים ומאובטחים לעסקים. מהאפיון הראשוני ועד למערכת שרצה אצלך בעסק.
         </p>
 
         {/* Stats Strip */}

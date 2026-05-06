@@ -1,3 +1,5 @@
+'use client'
+
 import { CountUp } from '@/components/ui/CountUp'
 
 const PAIN_POINTS = [
@@ -76,13 +78,20 @@ export default function PainPointsSection() {
 
         {/* Bridge to solution */}
         <div className="relative text-center bg-gradient-to-b from-gray-900 to-gray-950 border border-gray-800 rounded-2xl px-8 py-10">
-          <p className="text-gray-400 text-sm uppercase tracking-widest mb-3">אז מה עושים?</p>
+          <p className="text-red-400 text-sm font-semibold uppercase tracking-widest mb-3">מזהה את עצמך?</p>
           <p className="text-white text-2xl sm:text-3xl font-bold mb-2">
             עסקים חכמים לא עובדים <span className="line-through text-gray-600">קשה יותר</span> —
           </p>
-          <p className="text-white text-2xl sm:text-3xl font-bold">
+          <p className="text-white text-2xl sm:text-3xl font-bold mb-8">
             הם בונים <span className="text-indigo-400">מערכות שעובדות בשבילם</span>.
           </p>
+          <a
+            href="#contact"
+            onClick={(e) => { e.preventDefault(); const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }) }}
+            className="inline-flex items-center gap-2 bg-red-500 hover:bg-red-400 text-white font-bold px-8 py-3 rounded-xl text-base transition-all hover:scale-105 active:scale-95 shadow-lg shadow-red-500/30"
+          >
+            בוא נתקן את זה עכשיו ←
+          </a>
         </div>
       </div>
     </section>

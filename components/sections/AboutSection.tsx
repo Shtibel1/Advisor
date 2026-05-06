@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image'
 import { CountUp } from '@/components/ui/CountUp'
 import { ShieldIcon, CodeIcon, UsersIcon } from '@/components/ui/Icons'
@@ -40,9 +42,9 @@ export default function AboutSection() {
 
           {/* Text Content */}
           <div>
-            <span className="text-cyan-400 font-semibold text-sm uppercase tracking-widest">למה לבחור בי</span>
+            <span className="text-cyan-400 font-semibold text-sm uppercase tracking-widest">למה אני? כי אני בונה, לא מדבר</span>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mt-3 mb-6">
-              אני בונה, לא רק מייעץ
+              נדב שטיבל – מפתח AI Senior, בן 27
             </h2>
 
             {/* Personal Bio Card */}
@@ -60,8 +62,8 @@ export default function AboutSection() {
               <p className="text-cyan-400 font-semibold text-sm mb-2">קצת עלי</p>
               <p className="text-blue-200/80 text-sm leading-relaxed">
                 אני נדב שטיבל, בן 27, מפתח Full Stack Senior עם למעלה מ-5 שנות ניסיון בבניית מערכות מורכבות.
-                לאחר שראיתי מקרוב כיצד עסקים מפספסים את הפוטנציאל האמיתי של ה-AI בגלל ייעוץ שאינו יורד לרמת הביצוע, בחרתי להתמחות בדיוק בזה.
-                עד היום ליוויתי למעלה מ-10 עסקים ממגוון תחומים – ו-100% מהלקוחות ממליצים עליי לסביבתם.
+                עזרתי ל-ב-15 עסקים ישראליים – ממכירות ועד פיננסים. לא ייעוץ – פתרון מוכן Production: אבטחה, סקייל, אינטגרציות.
+                100% הלקוחות ממליצים עליי.
               </p>
             </div>
 
@@ -70,6 +72,24 @@ export default function AboutSection() {
               <strong className="text-white">מפתח Full Stack Senior</strong> ומממש את הפתרון מ-A עד Z &ndash;
               מאפיון, פיתוח, ועד הטמעה והדרכת הצוות.
             </p>
+
+            <div className="flex gap-3 mb-10">
+              <a
+                href="https://www.linkedin.com/in/nadav-shtibel"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-blue-600/40 hover:border-blue-400 text-blue-300 hover:text-blue-200 font-medium px-5 py-2.5 rounded-xl text-sm transition-all"
+              >
+                LinkedIn ↗
+              </a>
+              <a
+                href="#contact"
+                onClick={(e) => { e.preventDefault(); const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }) }}
+                className="inline-flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition-all hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/25"
+              >
+                קבע שיחה ←
+              </a>
+            </div>
 
             <div className="space-y-8">
               {DIFFERENTIATORS.map(({ Icon, colorClass, title, desc }) => (
