@@ -72,7 +72,33 @@ export default function HeroSection() {
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.2] mb-6 tracking-tight">
           <ProximityGlowText text="הופך בינה מלאכותית" />
           <br />
-          <ProximityGlowText text="לכוח עבודה בעסק שלך" isGradient />
+          <span className="relative inline-block">
+            <ProximityGlowText text="לכוח עבודה" isGradient />
+            {/* Two animated shimmer stripes */}
+            <span
+              className="absolute inset-x-0 flex flex-col gap-[4px]"
+              style={{ bottom: '-10px' }}
+              aria-hidden="true"
+            >
+              <span
+                className="h-[2.5px] rounded-full"
+                style={{
+                  background: 'linear-gradient(90deg, #22d3ee, #93c5fd, #22d3ee)',
+                  backgroundSize: '200% 100%',
+                  animation: 'stripeShimmer 2.4s linear infinite',
+                }}
+              />
+              <span
+                className="h-[2.5px] rounded-full"
+                style={{
+                  background: 'linear-gradient(90deg, #93c5fd, #22d3ee, #93c5fd)',
+                  backgroundSize: '200% 100%',
+                  animation: 'stripeShimmer 2.4s linear infinite 0.4s',
+                }}
+              />
+            </span>
+          </span>
+          <ProximityGlowText text=" בעסק שלך" isGradient />
         </h1>
 
         {/* Subheadline */}

@@ -38,6 +38,13 @@ html.a11y-high-contrast [role="button"] {
 }
 html.a11y-high-contrast img { filter: contrast(1.2); }
 
+/* ─── Stripe shimmer animation ───────────────────────────────────────────── */
+@keyframes stripeShimmer {
+  0%   { background-position: 200% center; opacity: 0.7; }
+  50%  { opacity: 1; }
+  100% { background-position: -200% center; opacity: 0.7; }
+}
+
 html.a11y-grayscale,
 html.a11y-grayscale body { filter: grayscale(100%) !important; }
 
